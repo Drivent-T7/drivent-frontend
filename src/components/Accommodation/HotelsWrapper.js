@@ -4,6 +4,10 @@ export function HotelsWrapper({ children, isLast }) {
   return <StyledHotelsWrapper isLast={isLast}>{children}</StyledHotelsWrapper>;
 }
 
+HotelsWrapper.Info = function HotelInfo({ children }) {
+  return <Info>{children}</Info>;
+};
+
 const StyledHotelsWrapper = styled.div`
   width: 196px;
   height: 264px;
@@ -32,6 +36,13 @@ const StyledHotelsWrapper = styled.div`
     line-height: 2em;
     color: #343434;
   }
+`;
+
+const Info = styled.div`
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 
   > span {
     font-size: 0.8em;
