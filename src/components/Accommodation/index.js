@@ -11,6 +11,30 @@ export default function Accommodation() {
   const { ticket } = useTicket();
   const { hotels } = useHotel();
 
+  function isValidTicket(ticket) {
+    return ticket && ticket.status === 'PAID' && !ticket.TicketType.isRemote && ticket.TicketType.includesHotel;
+  }
+
+  function getRoomCapacity({ roomsCapacity }) {
+    const capacity = {};
+
+    roomsCapacity = roomsCapacity.filter((number) => {
+      if (!capacity[number]) {
+        capacity[number] = true;
+        return true;
+      }
+      return false;
+    });
+
+    return roomsCapacity
+      .sort()
+      .join(', ')
+      .replace(1, 'Single')
+      .replace(2, 'Double')
+      .replace(3, 'Triple')
+      .replace(/,\s([^,]+)$/, ' e $1');
+  }
+
   return (
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
@@ -22,9 +46,17 @@ export default function Accommodation() {
           <div>
             {hotels ? (
               hotels.map((hotel, index) => (
-                <HotelsWrapper isLast={index === hotels.length - 1}>
+                <HotelsWrapper key={index} isLast={index === hotels.length - 1}>
                   <img alt={hotel.name} src={hotel.image} />
                   <h4>{hotel.name}</h4>
+
+                  <span>
+                    <b>Tipos de acomodação: </b>
+
+                    <br />
+
+                    {getRoomCapacity(hotel)}
+                  </span>
                 </HotelsWrapper>
               ))
             ) : (
@@ -35,10 +67,6 @@ export default function Accommodation() {
       )}
     </>
   );
-}
-
-function isValidTicket(ticket) {
-  return ticket && ticket.status === 'PAID' && !ticket.TicketType.isRemote && ticket.TicketType.includesHotel;
 }
 
 const StyledTypography = styled(Typography)`

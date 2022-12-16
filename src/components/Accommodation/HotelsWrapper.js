@@ -12,6 +12,8 @@ const StyledHotelsWrapper = styled.div`
   padding: 0.8em;
   border-radius: 10px;
   background-color: #ebebeb;
+  color: #3c3c3c;
+  font-weight: 400;
   cursor: pointer;
 
   &:hover {
@@ -26,9 +28,17 @@ const StyledHotelsWrapper = styled.div`
   }
 
   > h4 {
-    font-weight: 400;
     font-size: 1em;
     line-height: 2em;
     color: #343434;
+  }
+
+  > span {
+    font-size: 0.8em;
+    line-height: 1.3em;
+  }
+
+  b {
+    font-weight: 700;
   }
 `;
