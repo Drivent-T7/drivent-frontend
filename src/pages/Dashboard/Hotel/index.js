@@ -1,5 +1,5 @@
-import Accommodation from '../../../components/Accommodation';
+import HotelForm from '../../../components/HotelForm';
 
 export default function Hotel() {
-  return <Accommodation />;
+  return <HotelForm />;
 }
