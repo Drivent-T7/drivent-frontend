@@ -6,8 +6,9 @@ import { UnathorizedMsg } from './UnathorizedMsg';
 import useTicket from '../../hooks/api/useTicket';
 
 export default function HotelForm() {
-  const { ticket, getTicket } = useTicket();
+  const { getTicket } = useTicket();
   const [hasTicketValid, setHasTicketValid] = useState(false);
+  const [hasHotel, setHasHotel] = useState(false);
 
   useEffect(() => {
     returnTicketUser();
@@ -20,11 +21,15 @@ export default function HotelForm() {
         setHasTicketValid(false);
         return;
       }
+      if(response.TicketType.isRemote || !response.TicketType.includesHotel) {
+        setHasTicketValid(true);
+        setHasHotel(false);
+        return;
+      }
       setHasTicketValid(true);
-      console.log(response, ' response');
+      setHasHotel(true);
     } catch (error) {
       setHasTicketValid(false);
-      console.log(error, 'erro');
     }
   }
 
@@ -32,9 +37,15 @@ export default function HotelForm() {
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
       {hasTicketValid ? 
-        <Container>
-          <UnathorizedMsg variant="body1" align="center">Tudo na boa</UnathorizedMsg>
-        </Container> 
+        hasHotel 
+          ?
+          <Container>
+            <UnathorizedMsg variant="body1" align="center">Tudo na boa</UnathorizedMsg>
+          </Container>
+          :
+          <Container>
+            <UnathorizedMsg variant="body1" align="center">Sua modalidade de ingresso não inclui hospedagem. Prossiga para a escolha de atividades</UnathorizedMsg>
+          </Container>
         : 
         <Container>
           <UnathorizedMsg variant="body1" align="center">Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem</UnathorizedMsg>
