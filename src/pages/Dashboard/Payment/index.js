@@ -1,5 +1,5 @@
 import Splash from '../../../components/Splash';
-import { useTicket } from '../../../hooks/api/useTicket';
+import useTicket from '../../../hooks/api/useTicket';
 import NoTicket from './NoTicket';
 import HasReservedTicket from './HasReservedTicket';
 
