@@ -5,6 +5,8 @@ import { UnathorizedMsg } from './UnathorizedMsg';
 
 import useTicket from '../../hooks/api/useTicket';
 
+import Accommodation from '../Accommodation';
+
 export default function HotelForm() {
   const { getTicket } = useTicket();
   const [hasTicketValid, setHasTicketValid] = useState(false);
@@ -35,21 +37,24 @@ export default function HotelForm() {
 
   return (
     <>
-      <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
       {hasTicketValid ? 
         hasHotel 
           ?
-          <Container>
-            <UnathorizedMsg variant="body1" align="center">Tudo na boa</UnathorizedMsg>
-          </Container>
+          <Accommodation />
           :
-          <Container>
-            <UnathorizedMsg variant="body1" align="center">Sua modalidade de ingresso não inclui hospedagem. Prossiga para a escolha de atividades</UnathorizedMsg>
-          </Container>
+          <>
+            <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
+            <Container>
+              <UnathorizedMsg variant="body1" align="center">Sua modalidade de ingresso não inclui hospedagem. Prossiga para a escolha de atividades</UnathorizedMsg>
+            </Container>
+          </>
         : 
-        <Container>
-          <UnathorizedMsg variant="body1" align="center">Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem</UnathorizedMsg>
-        </Container>
+        <>
+          <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
+          <Container>
+            <UnathorizedMsg variant="body1" align="center">Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem</UnathorizedMsg>
+          </Container>
+        </>
       }
     </>
   );
