@@ -5,7 +5,7 @@ export default PaymentContext;
 
 export function PaymentProvider({ children }) {
   const [paymentOptionsSelected, setPaymentOptionsSelected] = useState({});
-  
+
   return (
     <PaymentContext.Provider value={{ paymentOptionsSelected, setPaymentOptionsSelected }}>
       {children}
