@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import useToken from '../../../hooks/useToken';
 import * as paymentApi from '../../../services/paymentApi';
 import styled from 'styled-components';
-import MyCard from './MyCard';
+import MyCard from './CardSection';
 
 export default function Payment() {
   const token = useToken();
@@ -38,6 +38,41 @@ export default function Payment() {
     </>
   );
 }
+
+// export default function PaymentSection() {
+//   const token = useToken();
+//   const [ticketData, setTicketData] = useState({});
+
+//   useEffect(() => {
+//     const ticketInformation = getData(token);
+//     ticketInformation
+//       .then((data) => {
+//         console.log(data);
+//         setTicketData(data);
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
+//   }, []);
+
+//   return (
+//     <>
+//       <Title>Ingresso e pagamento</Title>
+//       <Section>
+//         <h1>Ingresso Escolhido</h1>
+//         <Card>
+//           <Name>{ticketData.name}</Name>
+//           <Price>R$ {ticketData.price / 100}</Price>
+//         </Card>
+//       </Section>
+
+//       <Section>
+//         <h1>Pagamento</h1>
+//         <MyCard />
+//       </Section>
+//     </>
+//   );
+// }
 
 async function getData(token) {
   try {

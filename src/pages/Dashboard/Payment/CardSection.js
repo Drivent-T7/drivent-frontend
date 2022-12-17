@@ -4,6 +4,7 @@ import 'react-credit-cards/es/styles-compiled.css';
 import styled from 'styled-components';
 
 export default function MyCard() {
+  const [maxLength, setMaxLength] = useState(12);
   const [data, setData] = useState({
     number: '',
     name: '',
@@ -13,6 +14,7 @@ export default function MyCard() {
   });
 
   console.log(data.expiry);
+  console.log(maxLength);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -76,13 +78,21 @@ export default function MyCard() {
 
   return (
     <CardWrapper>
-      <Cards cvc={data.cvc} expiry={data.expiry} focused={data.focus} name={data.name} number={data.number} />
+      <Cards
+        cvc={data.cvc}
+        expiry={data.expiry}
+        focused={data.focus}
+        name={data.name}
+        number={data.number}
+        callback={({ maxLength }) => setMaxLength(maxLength)}
+      />
       <FormWrapper onSubmit={handleSubmit}>
         <InputWrapper>
           <Input
             name="number"
             placeholder="Card Number"
-            type="number"
+            type="tel"
+            maxLength={maxLength}
             value={data.number}
             onChange={handleChange}
             onFocus={handleInputFocus}
@@ -95,6 +105,7 @@ export default function MyCard() {
             name="name"
             placeholder="Name"
             type="text"
+            maxLength="17"
             value={data.name}
             onChange={handleChange}
             onFocus={handleInputFocus}
@@ -102,27 +113,25 @@ export default function MyCard() {
           />
         </InputWrapper>
         <InputWrapper direction="inline">
-          <Input
+          <ExpiryInput
             name="expiry"
             placeholder="Valid Thru"
             value={data.expiry}
             type="text"
             onChange={handleChange}
             onFocus={handleInputFocus}
-            width="60%"
             required
-            pattern="/^(0[1-9]|1[0-2])([2-9][3-9])$/"
+            pattern="^(0[1-9]|1[0-2])\/?(2[3-9]|[3-9]\d)$"
           />
 
-          <Input
+          <CvcInput
             name="cvc"
             placeholder="CVC"
+            type="tel"
+            maxLength="4"
             value={data.cvc}
             onChange={handleChange}
             onFocus={handleInputFocus}
-            width="30%"
-            maxlength="4"
-            type="number"
             required
           />
         </InputWrapper>
@@ -164,7 +173,7 @@ const InputWrapper = styled.div`
 `;
 
 const Input = styled.input`
-  width: ${(props) => (props.width ? props.width : '100%')};
+  width: 100%;
   height: 45px;
   border-radius: 5px;
   font-size: 20px;
@@ -178,6 +187,14 @@ const Input = styled.input`
     -webkit-appearance: none;
     margin: 0;
   }
+`;
+
+const ExpiryInput = styled(Input)`
+  width: 60%;
+`;
+
+const CvcInput = styled(Input)`
+  width: 30%;
 `;
 
 const Button = styled.button`
