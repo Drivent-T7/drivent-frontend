@@ -1,8 +1,18 @@
 import { HotelsWrapper } from './HotelsWrapper';
-import { SectionWrapper } from './SectionWrapper';
 
-export default function Hotels({ hotels }) {
-  function getRoomCapacity({ roomsCapacity }) {
+export default function Hotels({
+  id,
+  name,
+  image,
+  availableVacancies,
+  roomsCapacity,
+  isLast,
+  hotelChosen,
+  setHotelChosen,
+}) {
+  const choosen = hotelChosen === id;
+
+  function getRoomCapacity() {
     const capacity = {};
 
     roomsCapacity = roomsCapacity.filter((number) => {
@@ -23,31 +33,23 @@ export default function Hotels({ hotels }) {
   }
 
   return (
-    <SectionWrapper>
-      <h2>Primeiro, escolha seu hotel</h2>
+    <HotelsWrapper isLast={isLast} choosen={choosen} onClick={() => (choosen ? '' : setHotelChosen(id))}>
+      <img alt={name} src={image} />
+      <h4>{name}</h4>
 
-      <div>
-        {hotels.map((hotel, index) => (
-          <HotelsWrapper key={index} isLast={index === hotels.length - 1}>
-            <img alt={hotel.name} src={hotel.image} />
-            <h4>{hotel.name}</h4>
+      <HotelsWrapper.Info>
+        <span>
+          <b>Tipos de acomodação: </b>
+          <br />
+          {getRoomCapacity()}
+        </span>
 
-            <HotelsWrapper.Info>
-              <span>
-                <b>Tipos de acomodação: </b>
-                <br />
-                {getRoomCapacity(hotel)}
-              </span>
-
-              <span>
-                <b>Vagas disponíveis: </b>
-                <br />
-                {hotel.availableVacancies}
-              </span>
-            </HotelsWrapper.Info>
-          </HotelsWrapper>
-        ))}
-      </div>
-    </SectionWrapper>
+        <span>
+          <b>Vagas disponíveis: </b>
+          <br />
+          {availableVacancies}
+        </span>
+      </HotelsWrapper.Info>
+    </HotelsWrapper>
   );
 }

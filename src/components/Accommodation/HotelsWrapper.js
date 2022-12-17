@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-export function HotelsWrapper({ children, isLast }) {
-  return <StyledHotelsWrapper isLast={isLast}>{children}</StyledHotelsWrapper>;
+export function HotelsWrapper({ children, ...props }) {
+  return <StyledHotelsWrapper {...props}>{children}</StyledHotelsWrapper>;
 }
 
 HotelsWrapper.Info = function HotelInfo({ children }) {
@@ -15,7 +15,7 @@ const StyledHotelsWrapper = styled.div`
   margin-right: ${(props) => (props.isLast ? '0' : '20px')};
   padding: 0.8em;
   border-radius: 10px;
-  background-color: #ebebeb;
+  background-color: ${(props) => (props.choosen ? '#ffeed2' : '#ebebeb')};
   color: #3c3c3c;
   font-weight: 400;
   cursor: pointer;
