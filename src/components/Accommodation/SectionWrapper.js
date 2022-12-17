@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const SectionWrapper = styled.section`
   width: 100% !important;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  margin-bottom: 30px;
 
   > h2 {
     font-size: 1.1rem;
