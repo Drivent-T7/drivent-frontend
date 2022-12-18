@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import CardSection from './CardSection';
 import usePayment from '../../../hooks/api/usePayment';
+import { AiFillCheckCircle } from 'react-icons/ai';
 import { Container, SubTitle, Title } from './styles/CommomStyle';
 
 export default function HasReservedTicket({ ticket, getTicket }) {
@@ -16,11 +17,18 @@ export default function HasReservedTicket({ ticket, getTicket }) {
         <TicketName>{ticketTypeData.name}</TicketName>
         <TicketPrice>R$ {ticketTypeData.price / converterToGetPriceWithoutCents}</TicketPrice>
       </TicketCard>
+
+      <SubTitle>Pagamento</SubTitle>
       {ticket.status === 'PAID' ? (
-        <>PAGO</>
+        <ConfirmedPayment>
+          <AiFillCheckCircle size="50px" color="green" />
+          <TextWrapped>
+            <h1>Pagamento confirmado!</h1>
+            <p>Prossiga para escolha de hospedagem e atividades</p>
+          </TextWrapped>
+        </ConfirmedPayment>
       ) : (
         <>
-          <SubTitle>Pagamento</SubTitle>
           <CardSection getPayment={getPayment} getTicket={getTicket} ticketId={ticket.id} />
         </>
       )}
@@ -59,5 +67,32 @@ const TicketPrice = styled.div`
     line-height: 16px;
     text-align: center;
     color: #898989;
+  }
+`;
+
+const ConfirmedPayment = styled.div`
+  & {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+  }
+`;
+
+const TextWrapped = styled.div`
+  & {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #454545;
+
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  h1 {
+    font-weight: 700;
   }
 `;
