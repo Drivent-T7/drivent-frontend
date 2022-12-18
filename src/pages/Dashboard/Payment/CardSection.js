@@ -1,10 +1,23 @@
 import { useState } from 'react';
+import {
+  CardWrapper,
+  FormWrapper,
+  InputWrapper,
+  Input,
+  ExpiryInput,
+  CvcInput,
+  Button,
+} from './styles/CardSectionStyle';
+import { toast } from 'react-toastify';
+import useSavePayment from '../../../hooks/api/useSavePayment';
+import formatCard from './utils/formatCardData';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
-import styled from 'styled-components';
 
-export default function MyCard() {
+export default function CardSection({ getTicket, ticketId }) {
+  const { savePayment } = useSavePayment();
   const [maxLength, setMaxLength] = useState(12);
+  const [issuer, setIssuer] = useState('');
   const [data, setData] = useState({
     number: '',
     name: '',
@@ -13,38 +26,28 @@ export default function MyCard() {
     focus: '',
   });
 
-  console.log(data.expiry);
-  console.log(maxLength);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log(data);
-  }
-
   function handleChange(e) {
-    if (e.target.name === 'expiry') {
-      const value = formatExpirationDate(e.target.value);
-      setData({
-        ...data,
-        [e.target.name]: value,
-      });
+    let value;
 
-      return;
+    /*eslint-disable */
+    switch (e.target.name) {
+      case 'expiry':
+        value = formatCard.expirationDate(e.target.value);
+        break;
+
+      case 'cvc':
+        value = formatCard.CVC(e.target.value);
+        break;
+
+      default:
+        value = e.target.value;
+        break;
     }
-
-    if (e.target.name === 'cvc') {
-      const value = formatCVC(e.target.value);
-      setData({
-        ...data,
-        [e.target.name]: value,
-      });
-
-      return;
-    }
+    /*eslint-enable */
 
     setData({
       ...data,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     });
   }
 
@@ -55,25 +58,27 @@ export default function MyCard() {
     });
   }
 
-  function clearNumber(value = '') {
-    return value.replace(/\D+/g, '');
-  }
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-  function formatExpirationDate(value) {
-    const clearValue = clearNumber(value);
+    const paymentData = {
+      ticketId,
+      cardData: {
+        issuer,
+        number: Number(data.number),
+        name: data.name,
+        expirationDate: data.expiry,
+        cvv: Number(data.cvc),
+      },
+    };
 
-    if (clearValue.length >= 3) {
-      return `${clearValue.slice(0, 2)}/${clearValue.slice(2, 4)}`;
+    try {
+      await savePayment(paymentData);
+      toast('Pagamento realizado com sucesso!');
+      await getTicket();
+    } catch (error) {
+      toast('Não foi possível registrar o pagamento!');
     }
-    console.log(clearValue);
-    return clearValue;
-  }
-
-  function formatCVC(value) {
-    const clearValue = clearNumber(value);
-    let maxLength = 4;
-
-    return clearValue.slice(0, maxLength);
   }
 
   return (
@@ -84,7 +89,10 @@ export default function MyCard() {
         focused={data.focus}
         name={data.name}
         number={data.number}
-        callback={({ maxLength }) => setMaxLength(maxLength)}
+        callback={({ issuer, maxLength }) => {
+          setMaxLength(maxLength);
+          setIssuer(issuer);
+        }}
       />
       <FormWrapper onSubmit={handleSubmit}>
         <InputWrapper>
@@ -92,8 +100,8 @@ export default function MyCard() {
             name="number"
             placeholder="Card Number"
             type="tel"
-            maxLength={maxLength}
             value={data.number}
+            maxLength={maxLength}
             onChange={handleChange}
             onFocus={handleInputFocus}
             required
@@ -105,8 +113,8 @@ export default function MyCard() {
             name="name"
             placeholder="Name"
             type="text"
-            maxLength="17"
             value={data.name}
+            maxLength="17"
             onChange={handleChange}
             onFocus={handleInputFocus}
             required
@@ -116,8 +124,8 @@ export default function MyCard() {
           <ExpiryInput
             name="expiry"
             placeholder="Valid Thru"
-            value={data.expiry}
             type="text"
+            value={data.expiry}
             onChange={handleChange}
             onFocus={handleInputFocus}
             required
@@ -128,8 +136,8 @@ export default function MyCard() {
             name="cvc"
             placeholder="CVC"
             type="tel"
-            maxLength="4"
             value={data.cvc}
+            maxLength="4"
             onChange={handleChange}
             onFocus={handleInputFocus}
             required
@@ -141,81 +149,3 @@ export default function MyCard() {
     </CardWrapper>
   );
 }
-
-const CardWrapper = styled.div`
-  width: 670px;
-  height: 250px;
-  display: flex;
-  align-items: left;
-  flex-direction: row;
-  padding: 20px 0;
-`;
-
-const FormWrapper = styled.form`
-  width: 355px;
-  margin-left: 20px;
-  position: relative;
-`;
-
-const InputWrapper = styled.div`
-  min-height: 55px;
-  display: flex;
-  flex-direction: ${(props) => (props.direction ? 'row' : 'column')};
-  margin-bottom: 10px;
-  align-items: left;
-  justify-content: space-between;
-
-  label {
-    color: #8e8e8e;
-    font-size: 16px;
-    margin-top: 5px;
-  }
-`;
-
-const Input = styled.input`
-  width: 100%;
-  height: 45px;
-  border-radius: 5px;
-  font-size: 20px;
-  padding: 0 10px;
-  border: 1px solid #ccc;
-  outline-color: #898989;
-  text-decoration: none;
-
-  ::-webkit-outer-spin-button,
-  ::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-`;
-
-const ExpiryInput = styled(Input)`
-  width: 60%;
-`;
-
-const CvcInput = styled(Input)`
-  width: 30%;
-`;
-
-const Button = styled.button`
-  cursor: pointer;
-  width: 182px;
-  height: 37px;
-  background-color: #e0e0e0;
-  font-family: 'Roboto', sans-serif;
-  font-size: 14px;
-  line-height: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #000000;
-  position: absolute;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
-  border-radius: 4px;
-  top: 250px;
-  right: 485px;
-  outline-color: #e0e0e0;
-  border-color: #e0e0e0;
-  text-decoration: none;
-  border: none;
-`;
