@@ -10,7 +10,7 @@ export default function Payment() {
     return <Splash loading />;
   }
   if (ticket) {
-    return <HasReservedTicket ticket={ticket} />;
+    return <HasReservedTicket ticket={ticket} getTicket={getTicket} />;
   }
 
   return <NoTicket getTicket={getTicket} />;
