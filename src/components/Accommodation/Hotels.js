@@ -33,7 +33,7 @@ export default function Hotels({
   }
 
   return (
-    <HotelsWrapper isLast={isLast} choosen={choosen} onClick={() => (choosen ? '' : setHotelChosen(id))}>
+    <HotelsWrapper isLast={isLast} choosen={choosen} onClick={() => (choosen ? '' : setHotelChosen(id))} avaible={true} >
       <img alt={name} src={image} />
       <h4>{name}</h4>
 

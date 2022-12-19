@@ -18,7 +18,7 @@ const StyledHotelsWrapper = styled.div`
   background-color: ${(props) => (props.choosen ? '#ffeed2' : '#ebebeb')};
   color: #3c3c3c;
   font-weight: 400;
-  cursor: pointer;
+  cursor: ${(props) => (props.avaible ? 'pointer' : '')};;
 
   &:hover {
     background-color: #ffeed2;
