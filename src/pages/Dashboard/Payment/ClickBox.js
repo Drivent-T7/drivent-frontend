@@ -40,6 +40,10 @@ export const Container = styled.div`
 
     flex-direction: column;
   }
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const Name = styled.div`
