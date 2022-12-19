@@ -9,3 +9,13 @@ export async function save(token, body) {
 
   return response.data;
 }
+
+export async function get(token) {
+  const response = await api.get('/booking', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+}

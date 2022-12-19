@@ -6,18 +6,23 @@ import { toast } from 'react-toastify';
 import useTicket from '../../hooks/api/useTicket';
 import useHotel from '../../hooks/api/useHotel';
 import useRoom from '../../hooks/api/useRoom';
+import useBooking from '../../hooks/api/useBooking';
 import useSaveBooking from '../../hooks/api/useSaveBooking';
 import { SectionWrapper } from './SectionWrapper';
 import Hotels from './Hotels';
 import Rooms from './Rooms';
+import HotelReserved from './HotelReserved';
 
 export default function Accommodation() {
   const { ticket } = useTicket();
   const { hotels } = useHotel();
   const { getRooms } = useRoom();
+  const { getBooking } = useBooking();
   const { saveBooking } = useSaveBooking();
   const [accommodation, setAccommodation] = useState({});
   const [hotelChosen, setHotelChosen] = useState(0);
+  const [hasBooking, setHasBooking] = useState(false);
+  const [dataBooking, setDataBooking] = useState({});
   const [hotelRooms, setHotelRooms] = useState([]);
 
   function isValidTicket(ticket) {
@@ -25,6 +30,7 @@ export default function Accommodation() {
   }
 
   useEffect(async() => {
+    hasHotelBooking();
     if (hotelChosen) {
       try {
         const rooms = await getRooms(hotelChosen);
@@ -45,32 +51,56 @@ export default function Accommodation() {
     }
   }
 
+  async function hasHotelBooking() {
+    try {
+      const response = await getBooking();
+      setDataBooking(response);
+      setHasBooking(true);
+    } catch (error) {
+      setHasBooking(false);
+    }
+  }
+
   return (
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
 
-      {isValidTicket(ticket) && hotels && (
-        <SectionWrapper>
-          <h2>Primeiro, escolha seu hotel</h2>
-
-          <div>
-            {hotels.map((hotel, index) => (
-              <Hotels
-                key={index}
-                {...hotel}
-                isLast={index === hotels.length - 1}
-                hotelChosen={hotelChosen}
-                setHotelChosen={setHotelChosen}
-              />
-            ))}
-          </div>
-        </SectionWrapper>
-      )}
-
+      {isValidTicket(ticket) && hasBooking ? 
+        (<SectionWrapper>
+          <h2>Você já escolheu seu quarto:</h2>
+          <HotelReserved 
+            name={dataBooking.hotel.name} 
+            image={dataBooking.hotel.image} 
+            nameRoom={dataBooking.room.name}
+            roomCapacity={dataBooking.room.capacity}
+            booking={dataBooking.room.bookeds}
+          />
+        </SectionWrapper>) 
+        
+        : 
+        
+        isValidTicket(ticket) && hotels && (
+          <SectionWrapper>
+            <h2>Primeiro, escolha seu hotel</h2>
+  
+            <div>
+              {hotels.map((hotel, index) => (
+                <Hotels
+                  key={index}
+                  {...hotel}
+                  isLast={index === hotels.length - 1}
+                  hotelChosen={hotelChosen}
+                  setHotelChosen={setHotelChosen}
+                />
+              ))}
+            </div>
+          </SectionWrapper>
+        )}
+  
       {isValidTicket(ticket) && hotels && hotelRooms.length > 0 && (
         <SectionWrapper>
           <h2>Ótima pedida! Agora escolha seu quarto:</h2>
-
+  
           <div>
             {hotelRooms.map((room, index) => (
               <Rooms key={index} {...room} accommodation={accommodation} setAccommodation={setAccommodation} />
@@ -78,10 +108,11 @@ export default function Accommodation() {
           </div>
         </SectionWrapper>
       )}
-
+  
       {isValidTicket(ticket) && hotels && accommodation.roomId && (
         <ReserveButton onClick={reserveAccommodation}>RESERVAR QUARTO</ReserveButton>
       )}
+      
     </>
   );
 }
