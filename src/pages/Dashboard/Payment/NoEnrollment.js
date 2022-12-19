@@ -1,4 +1,4 @@
-import { Title } from './styles/CommomStyle';
+import { Title } from '../../../components/TicketPayment/styles/CommomStyle';
 import styled from 'styled-components';
 
 export default function NoEnrollment() {

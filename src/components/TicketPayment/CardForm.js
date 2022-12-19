@@ -9,12 +9,12 @@ import {
   Button,
 } from './styles/CardSectionStyle';
 import { toast } from 'react-toastify';
-import useSavePayment from '../../../hooks/api/useSavePayment';
+import useSavePayment from '../../hooks/api/useSavePayment';
 import formatCard from './utils/formatCardData';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 
-export default function CardSection({ getTicket, ticketId }) {
+export default function CardForm({ getTicket, ticketId }) {
   const { savePayment } = useSavePayment();
   const [maxLength, setMaxLength] = useState(12);
   const [issuer, setIssuer] = useState('');
