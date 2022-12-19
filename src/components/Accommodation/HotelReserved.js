@@ -38,7 +38,7 @@ export default function HotelReserved({
   useEffect(() => {
     capacityRoom(roomCapacity);
     peopleInTheRoom(booking);
-  }, []);
+  }, [roomCapacity, booking]);
 
   return (
     <HotelsWrapper choosen={true} >

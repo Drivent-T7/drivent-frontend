@@ -19,3 +19,13 @@ export async function get(token) {
 
   return response.data;
 }
+
+export async function update(token, body, bookingId) {
+  const response = await api.put(`/booking/${bookingId}`, body, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+}
