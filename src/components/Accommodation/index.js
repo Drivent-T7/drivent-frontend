@@ -16,13 +16,14 @@ import HotelReserved from './HotelReserved';
 
 export default function Accommodation() {
   const { ticket } = useTicket();
-  const { hotels } = useHotel();
+  const { getHotel } = useHotel();
   const { getRooms } = useRoom();
   const { getBooking } = useBooking();
   const { saveBooking } = useSaveBooking();
   const { updateBooking } = useUpdateBooking();
   const [accommodation, setAccommodation] = useState({});
   const [hotelChosen, setHotelChosen] = useState(0);
+  const [hotels, setHotels] = useState([]);
   const [hasBooking, setHasBooking] = useState(false);
   const [dataBooking, setDataBooking] = useState({});
   const [hotelRooms, setHotelRooms] = useState([]);
@@ -35,6 +36,7 @@ export default function Accommodation() {
 
   useEffect(async() => {
     hasHotelBooking();
+    getHotelsList();
     if (hotelChosen) {
       try {
         const rooms = await getRooms(hotelChosen);
@@ -44,6 +46,15 @@ export default function Accommodation() {
       }
     }
   }, [hotelChosen]);
+
+  async function getHotelsList() {
+    try {
+      const response = await getHotel();
+      setHotels(response);
+    } catch (error) {
+      toast('Não foi possível buscar os hoteis!');
+    }
+  }
 
   async function reserveAccommodation() {
     try {
@@ -55,6 +66,7 @@ export default function Accommodation() {
       setHotelRooms([]);
       setChangeAccommodation({});
       setAccommodation({});
+      getHotelsList();
       hasHotelBooking();
       toast('Quarto reservado com sucesso!');
     } catch (err) {
@@ -71,6 +83,7 @@ export default function Accommodation() {
       setHotelChosen(0);
       setHotelRooms([]);
       setHasBooking(false);
+      getHotelsList();
       hasHotelBooking();
       toast('Reserva do quarto trocada com sucesso!');
     } catch (err) {
@@ -94,7 +107,7 @@ export default function Accommodation() {
 
   return (
     <>
-      <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
+      <StyledTypography variant="h4" onClick={() => console.log(hotelChosen)}>Escolha de hotel e quarto</StyledTypography>
 
       {isValidTicket(ticket) && hasBooking ? 
         (
