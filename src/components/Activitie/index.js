@@ -68,6 +68,7 @@ export function Activie() {
 
       {isValidTicket(ticket) ? (
         <SectionWrapper>
+          <h2>Primeiro, filtre pelo dia do evento: </h2>
           {listDate.map((item, index) => (
             <ReserveButton 
               choosen={dateChosen} 
