@@ -1,8 +1,11 @@
-import { useState } from 'react';
 import { ButtonWrapper } from './ButtonWrapper';
 
-export function ReserveButton({ children, choosen, findActivies, id }) {
+export function ReserveButton({ children, choosen, setDateChosen, findActivies, id }) {
+  const select = choosen === id;
   return (
-    <ButtonWrapper choosen={choosen} onClick={() => findActivies(id)}>{children}</ButtonWrapper>
+    <ButtonWrapper choosen={choosen} select={select} onClick={() => {
+      setDateChosen(id);
+      findActivies(id);
+    }}>{children}</ButtonWrapper>
   );
 }

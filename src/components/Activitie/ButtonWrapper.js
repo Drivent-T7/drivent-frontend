@@ -9,7 +9,7 @@ const ReserveButtonStyle = styled.button`
   height: 37px;
   border: none;
   border-radius: 4px;
-  background-color: ${(props) => (props.choosen ? '#ffeed2' : '#ebebeb')};
+  background-color: ${(props) => (props.select ? '#ffeed2' : '#ebebeb')};
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0, 0.25);
   font-size: 14px;
   font-weight: 400;

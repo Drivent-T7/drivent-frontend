@@ -9,19 +9,18 @@ import useActivies from '../../hooks/api/useActivies';
 
 import { SectionWrapper } from '../Accommodation/SectionWrapper';
 import { ReserveButton } from './ReserveButton';
-import { ButtonWrapper } from './ButtonWrapper';
 
 export function Activie() {
   const { ticket } = useTicket();
   const { getActivies } = useDateActivies();
   const { getActiviesByDate } = useActivies();
   const [listDate, setListDate] = useState([]);
-  const [dateChosen, setDateChosen] = useState(false);
+  const [dateChosen, setDateChosen] = useState(0);
   
   async function findActivies(dateId) {
     try {
       const response = await getActiviesByDate(dateId);
-      setDateChosen(true);
+      setDateChosen(dateId);
       console.log(response);
     } catch (error) {
       toast('Não foi buscar as datas das atividades desse dia!');
@@ -70,7 +69,12 @@ export function Activie() {
       {isValidTicket(ticket) ? (
         <SectionWrapper>
           {listDate.map((item, index) => (
-            <ReserveButton choosen={dateChosen} key={item.id} id={item.id} findActivies={findActivies}>{item.date}</ReserveButton>
+            <ReserveButton 
+              choosen={dateChosen} 
+              setDateChosen={setDateChosen}
+              key={item.id} 
+              id={item.id} 
+              findActivies={findActivies}>{item.date}</ReserveButton>
           ))}        
         </SectionWrapper>
       ) : <></>}  
