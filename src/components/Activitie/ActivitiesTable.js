@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { Activities } from './Activities';
 
 export function ActivitiesTable({ activitiesData }) {
-  console.log(activitiesData);
   return (
     <Container>
       <Headers>
