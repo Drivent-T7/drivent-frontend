@@ -13,7 +13,7 @@ export function Activities({ localData }) {
         const endsAt = new Date(activity.endsAt).toLocaleTimeString('pt-BR');
         const duration = new Date(activity.endsAt).getHours() - new Date(activity.startsAt).getHours();
 
-        const bookings = activity.ActivityBooking.length;
+        const bookings = activity.ActivityBooking?.length;
         const availableVacancies = activity.capacity - bookings;
 
         let selectedStyle = {};
