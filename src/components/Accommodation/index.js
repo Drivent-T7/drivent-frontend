@@ -26,8 +26,8 @@ export default function Accommodation() {
   const [hasBooking, setHasBooking] = useState(false);
   const [dataBooking, setDataBooking] = useState({});
   const [hotelRooms, setHotelRooms] = useState([]);
-  const [changeRoom, setChangeRoom] = useState([]);
   const [changeAccommodation, setChangeAccommodation] = useState({});
+  const [isChange, setIsChange] = useState(false);
 
   function isValidTicket(ticket) {
     return ticket && ticket.status === 'PAID' && !ticket.TicketType.isRemote && ticket.TicketType.includesHotel;
@@ -47,9 +47,12 @@ export default function Accommodation() {
 
   async function reserveAccommodation() {
     try {
+      if(isChange) {
+        updateAccommodation();
+        return;
+      }
       await saveBooking(accommodation);
       setHotelRooms([]);
-      setChangeRoom([]);
       setChangeAccommodation({});
       setAccommodation({});
       hasHotelBooking();
@@ -62,9 +65,13 @@ export default function Accommodation() {
   async function updateAccommodation() {
     try {
       await updateBooking(changeAccommodation, dataBooking.bookingId);
-      hasHotelBooking();
-      setChangeRoom([]);
+      setIsChange(false);
+      setAccommodation({});
       setChangeAccommodation({});
+      setHotelChosen(0);
+      setHotelRooms([]);
+      setHasBooking(false);
+      hasHotelBooking();
       toast('Reserva do quarto trocada com sucesso!');
     } catch (err) {
       toast('Não foi possível fazer a troca para esse quarto!');
@@ -73,20 +80,15 @@ export default function Accommodation() {
 
   async function hasHotelBooking() {
     try {
+      if(isChange) {
+        setHasBooking(false);
+        return;
+      }
       const response = await getBooking();
       setDataBooking(response);
       setHasBooking(true);
     } catch (error) {
       setHasBooking(false);
-    }
-  }
-
-  async function showRoom(hotelId) {
-    try {
-      const response = await getRooms(hotelId);
-      setChangeRoom(response.Rooms);
-    } catch (error) {
-      toast('Não foi possível buscar os quartos desse hotel!');
     }
   }
 
@@ -106,23 +108,11 @@ export default function Accommodation() {
                 roomCapacity={dataBooking.room.capacity}
                 booking={dataBooking.room.bookeds}
               />
-              <ReserveButton onClick={() => showRoom(dataBooking.hotel.id)}>TROCAR DE QUARTO</ReserveButton>
+              <ReserveButton onClick={() => {
+                setIsChange(true);
+                setHasBooking(false);
+              }}>TROCAR DE QUARTO</ReserveButton>
             </SectionWrapper>
-            
-            {isValidTicket(ticket) && hotels && hasBooking && changeRoom.length > 0 && (
-              <SectionWrapper>
-                <h2>Tudo bem! Escolha o quarto que você deseja mudar:</h2>
-    
-                <div>
-                  {changeRoom.map((room, index) => (
-                    <Rooms key={index} {...room} accommodation={changeAccommodation} setAccommodation={setChangeAccommodation} roomReserved={dataBooking.room.id}/>
-                  ))}
-                </div>
-              </SectionWrapper>
-            )}
-            {isValidTicket(ticket) && hotels && hasBooking && changeAccommodation.roomId && (
-              <ReserveButton onClick={updateAccommodation}>CONFIRMAR ESCOLHA</ReserveButton>
-            )}
           </>
         ) 
         
@@ -152,13 +142,22 @@ export default function Accommodation() {
   
           <div>
             {hotelRooms.map((room, index) => (
-              <Rooms key={index} {...room} accommodation={accommodation} setAccommodation={setAccommodation} />
+              <Rooms 
+                key={index} 
+                {...room} 
+                accommodation={accommodation} 
+                setAccommodation={setAccommodation} 
+                changeAccommodation={changeAccommodation} 
+                setChangeAccommodation={setChangeAccommodation}
+                isChange={isChange}
+                roomBooked={dataBooking.room?.id}  
+              />
             ))}
           </div>
         </SectionWrapper>
       )}
   
-      {isValidTicket(ticket) && hotels && accommodation.roomId && (
+      {isValidTicket(ticket) && hotels && (accommodation.roomId || changeAccommodation.roomId) && (
         <ReserveButton onClick={reserveAccommodation}>RESERVAR QUARTO</ReserveButton>
       )}
       
