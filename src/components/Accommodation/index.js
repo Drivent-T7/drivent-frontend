@@ -35,7 +35,6 @@ export default function Accommodation() {
 
   useEffect(async() => {
     hasHotelBooking();
-    console.log('useefectr');
     if (hotelChosen) {
       try {
         const rooms = await getRooms(hotelChosen);
