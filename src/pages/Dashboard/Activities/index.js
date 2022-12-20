@@ -8,7 +8,16 @@ export default function Activities() {
     return (
       <Container>
         <Title>Atividades</Title>
-        <Message>Você precisa de um ticket pago para acessar as atividades.</Message>
+        <Message>Você precisa ter confirmado pagamento antes de fazer a escolha de atividades.</Message>
+      </Container>
+    );
+  }
+
+  if (ticket.ticketTypeId === 1) {
+    return (
+      <Container>
+        <Title>Atividades</Title>
+        <Message>Sua modalidade de ingresso não necessita escolher atividade.</Message>
       </Container>
     );
   }
@@ -39,9 +48,9 @@ const Message = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     height: 100%;
-    
+
     margin-bottom: 30px;
   }
 `;
