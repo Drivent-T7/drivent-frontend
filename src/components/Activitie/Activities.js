@@ -8,7 +8,7 @@ export function Activities({ localData }) {
 
   return (
     <Container>
-      {localData.Activity.map((activity, index) => {
+      {localData.Activities.map((activity, index) => {
         const startsAt = new Date(activity.startsAt).toLocaleTimeString('pt-BR');
         const endsAt = new Date(activity.endsAt).toLocaleTimeString('pt-BR');
         const duration = new Date(activity.endsAt).getHours() - new Date(activity.startsAt).getHours();
