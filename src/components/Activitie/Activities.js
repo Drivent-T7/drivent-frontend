@@ -71,4 +71,8 @@ const Activity = styled.div`
 
     min-height: 80px;
   }
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
