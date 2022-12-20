@@ -9,6 +9,7 @@ import useActivies from '../../hooks/api/useActivies';
 
 import { SectionWrapper } from '../Accommodation/SectionWrapper';
 import { ReserveButton } from './ReserveButton';
+import { ActivitiesTable } from './ActivitiesTable';
 
 export function Activie() {
   const { ticket } = useTicket();
@@ -16,16 +17,18 @@ export function Activie() {
   const { getActiviesByDate } = useActivies();
   const [listDate, setListDate] = useState([]);
   const [dateChosen, setDateChosen] = useState(0);
-  
+  const [activitiesData, setActivitiesData] = useState([]);
+
   async function findActivies(dateId) {
     try {
       const response = await getActiviesByDate(dateId);
       setDateChosen(dateId);
-      console.log(response);
+      setActivitiesData(response);
     } catch (error) {
       toast('Não foi buscar as datas das atividades desse dia!');
     }
   }
+
   function isValidTicket(ticket) {
     return ticket && ticket.status === 'PAID' && !ticket.TicketType.isRemote;
   }
@@ -38,7 +41,7 @@ export function Activie() {
 
       let listEventDate = [];
 
-      for(let i = 0; i < response.length; i++) {
+      for (let i = 0; i < response.length; i++) {
         let dateEvent = new Date(response[i].date);
         let dayActivie = dateEvent.getDay();
         let dayMouthActivie = dateEvent.getDate();
@@ -46,7 +49,7 @@ export function Activie() {
         let day = `${dayName[dayActivie]}, ${dayMouthActivie}/${monName[mouthActivie]}`;
         let objetcDate = {
           id: response[i].id,
-          date: day
+          date: day,
         };
 
         listEventDate.push(objetcDate);
@@ -54,14 +57,14 @@ export function Activie() {
 
       setListDate(listEventDate);
     } catch (error) {
-      toast('Não foi buscar as datas das atividades!');
+      toast('Não foi possível buscar as datas das atividades!');
     }
   }
 
   useEffect(() => {
     getDatesActivies();
   }, []);
-    
+
   return (
     <>
       <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
@@ -70,15 +73,22 @@ export function Activie() {
         <SectionWrapper>
           <h2>Primeiro, filtre pelo dia do evento: </h2>
           {listDate.map((item, index) => (
-            <ReserveButton 
-              choosen={dateChosen} 
+            <ReserveButton
+              choosen={dateChosen}
               setDateChosen={setDateChosen}
-              key={item.id} 
-              id={item.id} 
-              findActivies={findActivies}>{item.date}</ReserveButton>
-          ))}        
+              key={item.id}
+              id={item.id}
+              findActivies={findActivies}
+            >
+              {item.date}
+            </ReserveButton>
+          ))}
+
+          {dateChosen ? <ActivitiesTable activitiesData={activitiesData} /> : <></>}
         </SectionWrapper>
-      ) : <></>}  
+      ) : (
+        <></>
+      )}
     </>
   );
 }
@@ -86,4 +96,3 @@ export function Activie() {
 const StyledTypography = styled(Typography)`
   margin-bottom: 20px !important;
 `;
-
