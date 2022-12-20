@@ -14,7 +14,7 @@ export function Activities({ localData }) {
         const duration = new Date(activity.endsAt).getHours() - new Date(activity.startsAt).getHours();
 
         const bookings = activity.ActivityBooking.length;
-        const availableVacancies = 2 - bookings;
+        const availableVacancies = activity.capacity - bookings;
 
         let selectedStyle = {};
         if (activitySelected === activity.id && availableVacancies > 0) {
