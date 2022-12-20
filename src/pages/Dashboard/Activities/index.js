@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Activie } from '../../../components/Activitie';
 import useTicket from '../../../hooks/api/useTicket';
 
 export default function Activities() {
@@ -13,7 +14,7 @@ export default function Activities() {
     );
   }
 
-  return 'Atividades: Em breve!';
+  return <Activie />;
 }
 
 const Container = styled.div`
