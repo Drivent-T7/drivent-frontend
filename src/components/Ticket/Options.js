@@ -5,7 +5,7 @@ export default function Options({ data }) {
   return (
     <Container>
       {data.options.map((optionData, index) => {
-        return <ClickBox type={data.type} optionData={{ ...optionData, id: index }} key={index}></ClickBox>;
+        return <ClickBox type={data.type} optionData={{ ...optionData }} key={index}></ClickBox>;
       })}
     </Container>
   );

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import styled from 'styled-components';
-import PaymentContext from '../../../contexts/PaymentContext';
+import PaymentContext from '../../contexts/PaymentContext';
 
 export default function ClickBox({ optionData, type }) {
   const { paymentOptionsSelected, setPaymentOptionsSelected } = useContext(PaymentContext);
@@ -10,7 +10,7 @@ export default function ClickBox({ optionData, type }) {
       onClick={() => {
         setPaymentOptionsSelected((old) => {
           if (type === 'ticket' && optionData.id === 1) return { ticket: optionData };
-          
+
           const newer = { ...old };
           newer[type] = optionData;
           return newer;
