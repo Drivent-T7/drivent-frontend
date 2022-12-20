@@ -8,13 +8,25 @@ import useDateActivies from '../../hooks/api/useDateActivies';
 import useActivies from '../../hooks/api/useActivies';
 
 import { SectionWrapper } from '../Accommodation/SectionWrapper';
+import { ReserveButton } from './ReserveButton';
+import { ButtonWrapper } from './ButtonWrapper';
 
 export function Activie() {
   const { ticket } = useTicket();
   const { getActivies } = useDateActivies();
   const { getActiviesByDate } = useActivies();
   const [listDate, setListDate] = useState([]);
-
+  const [dateChosen, setDateChosen] = useState(false);
+  
+  async function findActivies(dateId) {
+    try {
+      const response = await getActiviesByDate(dateId);
+      setDateChosen(true);
+      console.log(response);
+    } catch (error) {
+      toast('Não foi buscar as datas das atividades desse dia!');
+    }
+  }
   function isValidTicket(ticket) {
     return ticket && ticket.status === 'PAID' && !ticket.TicketType.isRemote;
   }
@@ -47,26 +59,18 @@ export function Activie() {
     }
   }
 
-  async function findActivies(dateId) {
-    try {
-      const response = await getActiviesByDate(dateId);
-      console.log(response);
-    } catch (error) {
-      toast('Não foi buscar as datas das atividades desse dia!');
-    }
-  }
-
   useEffect(() => {
     getDatesActivies();
   }, []);
     
   return (
     <>
-      <StyledTypography variant="h4">Escolha de atividades</StyledTypography>  
+      <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
+
       {isValidTicket(ticket) ? (
         <SectionWrapper>
           {listDate.map((item, index) => (
-            <ReserveButton key={index} onClick={() => findActivies(item.id)}>{item.date}</ReserveButton>
+            <ReserveButton choosen={dateChosen} key={item.id} id={item.id} findActivies={findActivies}>{item.date}</ReserveButton>
           ))}        
         </SectionWrapper>
       ) : <></>}  
@@ -78,20 +82,3 @@ const StyledTypography = styled(Typography)`
   margin-bottom: 20px !important;
 `;
 
-const ReserveButton = styled.button`
-  width: 182px;
-  height: 37px;
-  border: none;
-  border-radius: 4px;
-  background-color: #e0e0e0;
-  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0, 0.25);
-  font-size: 14px;
-  font-weight: 400;
-  color: #000000;
-  cursor: pointer;
-  margin-right: 3px;
-  margin-bottom: 3px;
-  :hover {
-    filter: brightness(0.9);
-  }
-`;

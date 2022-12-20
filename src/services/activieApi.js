@@ -1,7 +1,7 @@
 import api from './api';
 
 export async function getDates(token) {
-  const response = await api.get('/activy', {
+  const response = await api.get('/activie', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -11,7 +11,7 @@ export async function getDates(token) {
 }
 
 export async function getActiviesByDateId(token, dateId) {
-  const response = await api.get(`/activy/${dateId}`, {
+  const response = await api.get(`/activie/${dateId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
