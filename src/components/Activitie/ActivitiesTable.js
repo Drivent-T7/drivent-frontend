@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Activities } from './Activities';
 
-export function ActivitiesTable({ activitiesData }) {
+export function ActivitiesTable({ activitiesData, activityBooking, getActivityBookings }) {
   return (
     <Container>
       <Headers>
@@ -12,7 +12,7 @@ export function ActivitiesTable({ activitiesData }) {
 
       <Table>
         {activitiesData.map((local, index) => {
-          return <Activities key={index} localData={local} />;
+          return <Activities key={index} localData={local} activityBooking={activityBooking} getActivityBookings={getActivityBookings} />;
         })}
       </Table>
     </Container>

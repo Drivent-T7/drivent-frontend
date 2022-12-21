@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import useTicket from '../../hooks/api/useTicket';
 import useDateActivies from '../../hooks/api/useDateActivies';
 import useActivies from '../../hooks/api/useActivies';
+import useActivityBooking from '../../hooks/api/useActivityBooking';
 
 import { SectionWrapper } from '../Accommodation/SectionWrapper';
 import { ReserveButton } from './ReserveButton';
@@ -15,6 +16,7 @@ export function Activie() {
   const { ticket } = useTicket();
   const { getActivies } = useDateActivies();
   const { getActiviesByDate } = useActivies();
+  const { activityBooking, getActivityBookings } = useActivityBooking();
   const [listDate, setListDate] = useState([]);
   const [dateChosen, setDateChosen] = useState(0);
   const [activitiesData, setActivitiesData] = useState([]);
@@ -84,7 +86,7 @@ export function Activie() {
             </ReserveButton>
           ))}
 
-          {dateChosen ? <ActivitiesTable activitiesData={activitiesData} /> : <></>}
+          {dateChosen ? <ActivitiesTable activitiesData={activitiesData} activityBooking={activityBooking} getActivityBookings={getActivityBookings} /> : <></>}
         </SectionWrapper>
       ) : (
         <></>

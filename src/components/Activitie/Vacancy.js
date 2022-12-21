@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { BiCheckCircle, BiLogIn } from 'react-icons/bi';
 import { RiCloseCircleLine } from 'react-icons/ri';
 
-export function Vacancy({ activity, activitySelected, availableVacancies }) {
-  if (activitySelected === activity.id && availableVacancies > 0) {
+export function Vacancy({ bookedActivities, activity, availableVacancies }) {
+  if (bookedActivities?.find((e) => e === activity.id)) {
     return (
       <Container>
         <BiCheckCircle color="#078632" size={'25px'} />
