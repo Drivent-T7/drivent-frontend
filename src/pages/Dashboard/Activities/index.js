@@ -9,7 +9,7 @@ export default function Activities() {
     return (
       <Container>
         <Title>Atividades</Title>
-        <Message>Você precisa ter confirmado pagamento antes de fazer a escolha de atividades.</Message>
+        <Message><p>Você precisa ter confirmado pagamento antes de fazer a escolha de atividades.</p></Message>
       </Container>
     );
   }
@@ -18,7 +18,7 @@ export default function Activities() {
     return (
       <Container>
         <Title>Atividades</Title>
-        <Message>Sua modalidade de ingresso não necessita escolher atividade.</Message>
+        <Message><p>Sua modalidade de ingresso não necessita escolher atividade.</p></Message>
       </Container>
     );
   }
@@ -46,12 +46,20 @@ const Title = styled.div`
 
 const Message = styled.div`
   & {
+    width: 100%;
+    height: 70%;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+  }
 
-    height: 100%;
+  p {
+    width: 50%;
 
-    margin-bottom: 30px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    line-height: 23px;
+    color: #8e8e8e;
+    text-align: center;
   }
 `;
