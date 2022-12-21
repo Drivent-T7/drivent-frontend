@@ -43,6 +43,11 @@ const TicketCard = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    @media (max-width: 600px) {
+    width: 90%;
+    max-width: 290px;
+  }
   }
 `;
 
