@@ -7,12 +7,26 @@ const CardWrapper = styled.div`
   align-items: left;
   flex-direction: row;
   padding: 20px 0;
+
+  @media (max-width: 600px) {
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    background-color: pink;
+    align-items: center;
+  }
 `;
 
 const FormWrapper = styled.form`
-  width: 355px;
+  width: 100%;
   margin-left: 20px;
   position: relative;
+
+  @media (max-width: 600px) {
+    margin-top: 30px;
+    margin-left: 0;
+    margin-bottom: 50px;
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -77,6 +91,11 @@ const Button = styled.button`
   position: absolute;
   top: 250px;
   right: 485px;
+
+  @media (max-width: 600px) {
+    top: 210px;
+    left: 0;
+  }
 `;
 
 export { CardWrapper, FormWrapper, InputWrapper, Input, ExpiryInput, CvcInput, Button };
