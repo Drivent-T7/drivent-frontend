@@ -12,7 +12,6 @@ const CardWrapper = styled.div`
     height: 100%;
     width: 100%;
     flex-direction: column;
-    background-color: pink;
     align-items: center;
   }
 `;
