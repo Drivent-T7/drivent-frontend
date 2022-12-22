@@ -4,7 +4,7 @@ import useTicket from '../../../hooks/api/useTicket';
 
 export default function Activities() {
   const { ticket } = useTicket();
-
+ 
   if (ticket?.status !== 'PAID') {
     return (
       <Container>
@@ -14,7 +14,7 @@ export default function Activities() {
     );
   }
 
-  if (ticket.ticketTypeId === 1) {
+  if (ticket.TicketType.isRemote) {
     return (
       <Container>
         <Title>Atividades</Title>
