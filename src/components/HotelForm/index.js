@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography';
-import { UnathorizedMsg } from './UnathorizedMsg';
 
 import useTicket from '../../hooks/api/useTicket';
 
@@ -43,35 +41,48 @@ export default function HotelForm() {
           <Accommodation />
           :
           <>
-            <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-            <Container>
-              <UnathorizedMsg variant="body1" align="center">Sua modalidade de ingresso não inclui hospedagem. Prossiga para a escolha de atividades</UnathorizedMsg>
-            </Container>
+            <Title>Escolha de hotel e quarto</Title>
+            <AlertWrapper>
+              <p>Sua modalidade de ingresso não inclui hospedagem. Prossiga para a escolha de atividades</p>
+            </AlertWrapper>
           </>
         : 
         <>
-          <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-          <Container>
-            <UnathorizedMsg variant="body1" align="center">Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem</UnathorizedMsg>
-          </Container>
+          <Title>Escolha de hotel e quarto</Title>
+          <AlertWrapper>
+            <p>Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem</p>
+          </AlertWrapper>
         </>
       }
     </>
   );
 }
 
-const StyledTypography = styled(Typography)`
-  margin-bottom: 20px!important;
+const Title = styled.div`
+  & {
+    font-size: 34px;
+    line-height: 40px;
+
+    margin-bottom: 30px;
+  }
 `;
 
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 70vh;
-  @media (max-width: 600px) {
-    > div {
-      height: 60vh;
-    }
+const AlertWrapper = styled.div`
+  & {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  p {
+    width: 50%;
+
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    line-height: 23px;
+    color: #8e8e8e;
+    text-align: center;
   }
 `;

@@ -107,7 +107,7 @@ export default function Accommodation() {
 
   return (
     <>
-      <StyledTypography variant="h4" onClick={() => console.log(hotelChosen)}>Escolha de hotel e quarto</StyledTypography>
+      <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
 
       {isValidTicket(ticket) && hasBooking ? 
         (
