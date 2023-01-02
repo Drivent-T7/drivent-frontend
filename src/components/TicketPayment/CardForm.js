@@ -65,7 +65,7 @@ export default function CardForm({ getTicket, ticketId }) {
       ticketId,
       cardData: {
         issuer,
-        number: Number(data.number),
+        number: data.number,
         name: data.name,
         expirationDate: data.expiry,
         cvv: Number(data.cvc),
