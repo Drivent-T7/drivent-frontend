@@ -5,32 +5,12 @@ export default function Hotels({
   name,
   image,
   availableVacancies,
-  roomsCapacity,
+  capacity,
   isLast,
   hotelChosen,
   setHotelChosen,
 }) {
   const choosen = hotelChosen === id;
-
-  function getRoomCapacity() {
-    const capacity = {};
-
-    roomsCapacity = roomsCapacity.filter((number) => {
-      if (!capacity[number]) {
-        capacity[number] = true;
-        return true;
-      }
-      return false;
-    });
-
-    return roomsCapacity
-      .sort()
-      .join(', ')
-      .replace(1, 'Single')
-      .replace(2, 'Double')
-      .replace(3, 'Triple')
-      .replace(/,\s([^,]+)$/, ' e $1');
-  }
 
   return (
     <HotelsWrapper isLast={isLast} choosen={choosen} onClick={() => (choosen ? '' : setHotelChosen(id))} avaible={true} >
@@ -41,7 +21,7 @@ export default function Hotels({
         <span>
           <b>Tipos de acomodação: </b>
           <br />
-          {getRoomCapacity()}
+          {capacity}
         </span>
 
         <span>
