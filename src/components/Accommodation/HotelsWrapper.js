@@ -12,13 +12,13 @@ const StyledHotelsWrapper = styled.div`
   width: 196px;
   height: 264px;
   margin-bottom: 20px;
-  margin-right: ${(props) => (props.isLast ? '0' : '20px')};
+  margin-right: 20px;
   padding: 0.8em;
   border-radius: 10px;
   background-color: ${(props) => (props.choosen ? '#ffeed2' : '#ebebeb')};
   color: #3c3c3c;
   font-weight: 400;
-  cursor: ${(props) => (props.avaible ? 'pointer' : '')};;
+  cursor: pointer;
 
   &:hover {
     background-color: #ffeed2;

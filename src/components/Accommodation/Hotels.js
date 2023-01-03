@@ -1,19 +1,10 @@
 import { HotelsWrapper } from './HotelsWrapper';
 
-export default function Hotels({
-  id,
-  name,
-  image,
-  availableVacancies,
-  capacity,
-  isLast,
-  hotelChosen,
-  setHotelChosen,
-}) {
+export default function Hotels({ id, name, image, availableVacancies, capacity, hotelChosen, setHotelChosen }) {
   const choosen = hotelChosen === id;
 
   return (
-    <HotelsWrapper isLast={isLast} choosen={choosen} onClick={() => (choosen ? '' : setHotelChosen(id))} avaible={true} >
+    <HotelsWrapper choosen={choosen} onClick={() => (choosen ? '' : setHotelChosen(id))}>
       <img alt={name} src={image} />
       <h4>{name}</h4>
 
