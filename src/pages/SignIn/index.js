@@ -6,6 +6,7 @@ import AuthLayout from '../../layouts/Auth';
 
 import Input from '../../components/Form/Input';
 import Button from '../../components/Form/Button';
+import ButtonGitHub from '../../components/Form/ButtonGItHub';
 import Link from '../../components/Link';
 import { Row, Title, Label } from '../../components/Auth';
 
@@ -13,17 +14,43 @@ import EventInfoContext from '../../contexts/EventInfoContext';
 import UserContext from '../../contexts/UserContext';
 
 import useSignIn from '../../hooks/api/useSignIn';
+import useSignInMethod from '../../hooks/api/useSignInMethod';
+
+import { app } from '../../services/fireBaseConfig';
+
+import { 
+  GithubAuthProvider,
+  getAuth,
+  signInWithPopup
+} from 'firebase/auth';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const { loadingSignIn, signIn } = useSignIn();
+  const { signInMethod } = useSignInMethod();
 
   const { eventInfo } = useContext(EventInfoContext);
   const { setUserData } = useContext(UserContext);
 
   const navigate = useNavigate();
+
+  const gitHubProvider = new GithubAuthProvider();
+
+  const auth = getAuth(app);
+
+  const gitHubSignIn = async() => {
+    try {
+      const response = await signInWithPopup(auth, gitHubProvider);
+      const userData = await signInMethod(response.user.providerData[0].email, response.user.providerData[0].uid);
+      setUserData(userData);
+      toast('Login realizado com sucesso!');
+      navigate('/dashboard');
+    } catch (error) {
+      toast('Não foi possível fazer o login!');
+    }
+  };
 
   async function submit(event) {
     event.preventDefault();
@@ -60,6 +87,7 @@ export default function SignIn() {
           </Button>
         </form>
       </Row>
+      <ButtonGitHub onClick={gitHubSignIn}>Acesse com GitHub</ButtonGitHub>
       <Row>
         <Link to="/enroll">Não possui login? Inscreva-se</Link>
       </Row>
