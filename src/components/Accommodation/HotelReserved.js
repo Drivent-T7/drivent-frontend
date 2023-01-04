@@ -49,7 +49,7 @@ export default function HotelReserved({
         <span>
           <b>Quarto reservado: </b>
           <br />
-          <p>{nameRoom} {typeRoom}</p>
+          <p>{nameRoom} ({typeRoom})</p>
         </span>
 
         <span>
