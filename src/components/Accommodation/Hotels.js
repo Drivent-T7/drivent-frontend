@@ -1,39 +1,13 @@
 import { HotelsWrapper } from './HotelsWrapper';
 
-export default function Hotels({
-  id,
-  name,
-  image,
-  availableVacancies,
-  roomsCapacity,
-  isLast,
-  hotelChosen,
-  setHotelChosen,
-}) {
-  const choosen = hotelChosen === id;
-
-  function getRoomCapacity() {
-    const capacity = {};
-
-    roomsCapacity = roomsCapacity.filter((number) => {
-      if (!capacity[number]) {
-        capacity[number] = true;
-        return true;
-      }
-      return false;
-    });
-
-    return roomsCapacity
-      .sort()
-      .join(', ')
-      .replace(1, 'Single')
-      .replace(2, 'Double')
-      .replace(3, 'Triple')
-      .replace(/,\s([^,]+)$/, ' e $1');
-  }
+export default function Hotels({ id, name, image, availableVacancies, capacity, accommodation, setAccommodation }) {
+  const choosen = accommodation.hotelId === id;
 
   return (
-    <HotelsWrapper isLast={isLast} choosen={choosen} onClick={() => (choosen ? '' : setHotelChosen(id))} avaible={true} >
+    <HotelsWrapper
+      choosen={choosen}
+      onClick={() => (choosen ? '' : setAccommodation((prev) => ({ ...prev, hotelId: id })))}
+    >
       <img alt={name} src={image} />
       <h4>{name}</h4>
 
@@ -41,7 +15,7 @@ export default function Hotels({
         <span>
           <b>Tipos de acomodação: </b>
           <br />
-          {getRoomCapacity()}
+          {capacity}
         </span>
 
         <span>
