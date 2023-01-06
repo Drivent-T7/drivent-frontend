@@ -2,6 +2,7 @@ import { toast } from 'react-toastify';
 import { Content } from './Content';
 import { Vacancy } from './Vacancy';
 import styled from 'styled-components';
+import swal from '@sweetalert/with-react';
 import useSaveActivityBooking from '../../hooks/api/useSaveActivityBooking';
 
 export function Activities({ localData, activityBooking, getActivityBookings }) {
@@ -46,13 +47,28 @@ export function Activities({ localData, activityBooking, getActivityBookings }) 
                 if(hasConflict([...bookedActivitiesTimes], newActivityTime)) {
                   toast('Horários conflitantes! Escolha outra atividade!');
                 } else {
-                  try {
-                    await saveActivityBooking({ activityId: activity.id });
-                    toast('Inscrição realizada com sucesso!');
-                    await getActivityBookings();
-                  } catch (error) {
-                    toast('Não foi possível registrar a inscrição!');
-                  }
+                  swal({
+                    title: `Deseja se inscrever na atividade: "${activity.name}"?`,
+                    text: `${new Date(activity.startsAt).getDate()}/${new Date(activity.startsAt).getMonth() + 1} - ${startsAt} às ${endsAt}`,
+                    icon: 'warning',
+                    buttons: [true, 'Inscrever'],
+                    content: (
+                      <WarningMessage>
+                        a inscrição não poderá ser desfeita!
+                      </WarningMessage>                   
+                    )
+                  })
+                    .then( async(confirm) => {
+                      if (confirm) {                      
+                        try {
+                          await saveActivityBooking({ activityId: activity.id });
+                          toast('Inscrição realizada com sucesso!');
+                          await getActivityBookings();
+                        } catch (error) {
+                          toast('Não foi possível registrar a inscrição!');
+                        }
+                      }
+                    });
                 }
               };
 
@@ -112,4 +128,16 @@ const Activity = styled.div`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const WarningMessage = styled.div`
+  font-style: oblique;
+  font-variant: small-caps;
+  height: 50px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 `;
