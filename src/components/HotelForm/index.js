@@ -7,7 +7,7 @@ import Accommodation from '../Accommodation';
 import Splash from '../Splash';
 
 export default function HotelForm() {
-  const { getTicket, ticketLoading } = useTicket();
+  const { getTicket } = useTicket();
   const [isLoading, setIsLoading] = useState(true);
   const [hasTicketValid, setHasTicketValid] = useState(false);
   const [hasHotel, setHasHotel] = useState(false);
