@@ -1,9 +1,14 @@
 import styled from 'styled-components';
 import { Activie } from '../../../components/Activitie';
+import Splash from '../../../components/Splash';
 import useTicket from '../../../hooks/api/useTicket';
 
 export default function Activities() {
-  const { ticket } = useTicket();
+  const { ticket, ticketLoading } = useTicket();
+
+  if(ticketLoading) {
+    return <Splash loading />;
+  }
  
   if (ticket?.status !== 'PAID') {
     return (
