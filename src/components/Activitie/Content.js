@@ -45,5 +45,9 @@ const DateTime = styled.div`
     line-height: 14px;
 
     color: #343434;
+
+    @media (orientation: portrait) {
+      padding: 10px 0px;
+    }
   }
 `;

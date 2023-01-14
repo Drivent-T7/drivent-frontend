@@ -86,7 +86,15 @@ export function Activie() {
             </ReserveButton>
           ))}
 
-          {dateChosen ? <ActivitiesTable activitiesData={activitiesData} activityBooking={activityBooking} getActivityBookings={getActivityBookings} /> : <></>}
+          {dateChosen ? (
+            <ActivitiesTable
+              activitiesData={activitiesData}
+              activityBooking={activityBooking}
+              getActivityBookings={getActivityBookings}
+            />
+          ) : (
+            <></>
+          )}
         </SectionWrapper>
       ) : (
         <></>
