@@ -39,6 +39,13 @@ const Container = styled.div`
     border-left: 1px solid #d7d7d7;
 
     width: 60px;
+
+    @media (orientation: portrait) {
+      border: none;
+      border-top: 1px solid #d7d7d7;
+      width: 100%;
+      padding-top: 10px;
+    }
   }
 `;
 

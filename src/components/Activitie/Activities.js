@@ -9,12 +9,12 @@ export function Activities({ localData, activityBooking, getActivityBookings }) 
   const { saveActivityBooking } = useSaveActivityBooking();
   let bookedActivities;
   let bookedActivitiesTimes;
-  if(activityBooking) {
+  if (activityBooking) {
     bookedActivities = activityBooking.map((obj) => obj.Activities.id);
     bookedActivitiesTimes = activityBooking.map((obj) => {
       return {
         startsAt: new Date(obj.Activities.startsAt),
-        endsAt: new Date(obj.Activities.endsAt)
+        endsAt: new Date(obj.Activities.endsAt),
       };
     });
   }
@@ -38,43 +38,40 @@ export function Activities({ localData, activityBooking, getActivityBookings }) 
           <Activity
             key={index}
             style={{ ...selectedStyle, height: `${duration * 80}px` }}
-            onClick={ async() => {
+            onClick={async() => {
               if (availableVacancies > 0 && !bookedActivity) {
                 const newActivityTime = {
                   startsAt: new Date(activity.startsAt),
-                  endsAt: new Date(activity.endsAt)
+                  endsAt: new Date(activity.endsAt),
                 };
-                if(hasConflict([...bookedActivitiesTimes], newActivityTime)) {
+                if (hasConflict([...bookedActivitiesTimes], newActivityTime)) {
                   toast('Horários conflitantes! Escolha outra atividade!');
                 } else {
                   swal({
                     title: `Deseja se inscrever na atividade: "${activity.name}"?`,
-                    text: `${new Date(activity.startsAt).getDate()}/${new Date(activity.startsAt).getMonth() + 1} - ${startsAt} às ${endsAt}`,
+                    text: `${new Date(activity.startsAt).getDate()}/${
+                      new Date(activity.startsAt).getMonth() + 1
+                    } - ${startsAt} às ${endsAt}`,
                     icon: 'warning',
                     buttons: [true, 'Inscrever'],
-                    content: (
-                      <WarningMessage>
-                        a inscrição não poderá ser desfeita!
-                      </WarningMessage>                   
-                    )
-                  })
-                    .then( async(confirm) => {
-                      if (confirm) {                      
-                        try {
-                          await saveActivityBooking({ activityId: activity.id });
-                          toast('Inscrição realizada com sucesso!');
-                          await getActivityBookings();
-                        } catch (error) {
-                          toast('Não foi possível registrar a inscrição!');
-                        }
+                    content: <WarningMessage>a inscrição não poderá ser desfeita!</WarningMessage>,
+                  }).then(async(confirm) => {
+                    if (confirm) {
+                      try {
+                        await saveActivityBooking({ activityId: activity.id });
+                        toast('Inscrição realizada com sucesso!');
+                        await getActivityBookings();
+                      } catch (error) {
+                        toast('Não foi possível registrar a inscrição!');
                       }
-                    });
+                    }
+                  });
                 }
-              };
+              }
 
-              if(availableVacancies <= 0) {
+              if (availableVacancies <= 0) {
                 toast('Não há vagas nesta atividade!');
-              };
+              }
             }}
           >
             <Content name={activity.name} startsAt={startsAt} endsAt={endsAt} />
@@ -87,11 +84,14 @@ export function Activities({ localData, activityBooking, getActivityBookings }) 
   );
 }
 
-export function hasConflict(bookedActivitiesTime, newActivityTime) { 
+export function hasConflict(bookedActivitiesTime, newActivityTime) {
   for (const obj of bookedActivitiesTime) {
-    if( (newActivityTime.startsAt >= obj.startsAt && newActivityTime.startsAt < obj.endsAt) || (newActivityTime.endsAt > bookedActivitiesTime.startsAt && newActivityTime.endsAt <= bookedActivitiesTime.endsAt) ) {
+    if (
+      (newActivityTime.startsAt >= obj.startsAt && newActivityTime.startsAt < obj.endsAt) ||
+      (newActivityTime.endsAt > bookedActivitiesTime.startsAt && newActivityTime.endsAt <= bookedActivitiesTime.endsAt)
+    ) {
       return true;
-    };
+    }
   }
 
   return false;
@@ -123,6 +123,12 @@ const Activity = styled.div`
     justify-content: space-between;
 
     min-height: 80px;
+
+    @media (orientation: portrait) {
+      flex-direction: column;
+      height: fit-content !important;
+      min-height: fit-content !important;
+    }
   }
 
   &:hover {
