@@ -8,16 +8,17 @@ import NoTicket from '../../../components/Ticket';
 
 export default function Payment() {
   const { ticket, ticketLoading, getTicket } = useTicket();
-  const { enrollment } = useEnrollment();
+  const { enrollment, enrollmentLoading } = useEnrollment();
   const { ticketTypes, ticketTypesLoading } = useTicketTypes();
+  
+  if (enrollmentLoading || ticketLoading || ticketTypesLoading) {
+    return <Splash loading />;
+  }
 
   if (!enrollment) {
     return <NoEnrollment />;
   }
 
-  if (ticketLoading || ticketTypesLoading) {
-    return <Splash loading />;
-  }
   if (ticket) {
     return <HasReservedTicket ticket={ticket} getTicket={getTicket} />;
   }

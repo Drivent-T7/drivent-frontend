@@ -4,9 +4,11 @@ import styled from 'styled-components';
 import useTicket from '../../hooks/api/useTicket';
 
 import Accommodation from '../Accommodation';
+import Splash from '../Splash';
 
 export default function HotelForm() {
   const { getTicket } = useTicket();
+  const [isLoading, setIsLoading] = useState(true);
   const [hasTicketValid, setHasTicketValid] = useState(false);
   const [hasHotel, setHasHotel] = useState(false);
 
@@ -19,23 +21,27 @@ export default function HotelForm() {
       const response = await getTicket();
       if(response.status === 'RESERVED') {
         setHasTicketValid(false);
+        setIsLoading(false);
         return;
       }
       if(response.TicketType.isRemote || !response.TicketType.includesHotel) {
         setHasTicketValid(true);
         setHasHotel(false);
+        setIsLoading(false);
         return;
       }
       setHasTicketValid(true);
       setHasHotel(true);
+      setIsLoading(false);
     } catch (error) {
       setHasTicketValid(false);
+      setIsLoading(false);
     }
   }
 
   return (
     <>
-      {hasTicketValid ? 
+      { isLoading ? <Splash loading /> : hasTicketValid ? 
         hasHotel 
           ?
           <Accommodation />

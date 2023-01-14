@@ -7,7 +7,7 @@ import driventLogo from '../assets/images/drivent.png';
 
 export default function Splash({ loading = false, message = '' }) {
   return (
-    <StyledPage background="#FA4098">
+    <StyledPage>
       <Grid>
         {loading && <StyledLoader color="#FFFFFF" height={26} width={26} type="Oval" />}
         <img src={driventLogo} alt="Driven.t" />
@@ -18,8 +18,9 @@ export default function Splash({ loading = false, message = '' }) {
 }
 
 const StyledPage = styled(Page)`
-  color: white;
+  background-color: #FA4098;
   padding: 20px;
+  min-height: 100%;
 `;
 
 const Grid = styled.div`
